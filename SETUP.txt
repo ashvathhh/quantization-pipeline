@@ -1,0 +1,150 @@
+===============================================================
+  QUANTIZATION PIPELINE — SETUP GUIDE (Windows)
+  Ashvath Cheppalli & Saketh Kuppili — CS 5130
+===============================================================
+
+STEP 1 — OPEN COMMAND PROMPT
+──────────────────────────────
+  Press Windows key + R
+  Type:  cmd
+  Press Enter
+
+STEP 2 — GO TO YOUR PROJECT FOLDER
+─────────────────────────────────────
+  Type this exactly and press Enter:
+
+      cd "D:\APP PROJECT"
+
+  You should see:
+      D:\APP PROJECT>
+
+STEP 3 — CREATE VIRTUAL ENVIRONMENT
+──────────────────────────────────────
+  Type this and press Enter:
+
+      python -m venv venv
+
+  Wait about 30 seconds. Then activate it:
+
+      venv\Scripts\activate
+
+  You should now see (venv) at the start:
+      (venv) D:\APP PROJECT>
+
+  ⚠️  IMPORTANT: You must see (venv) before continuing.
+  If you don't, try:   py -m venv venv
+
+STEP 4 — INSTALL LIBRARIES
+────────────────────────────
+  Type this and press Enter:
+
+      pip install -r requirements.txt
+
+  This takes 3–8 minutes. Many lines will scroll by — that is normal.
+  Wait until you see "Successfully installed ..." at the bottom.
+
+STEP 5 — RUN THE PROJECT
+──────────────────────────
+  Type this and press Enter:
+
+      python app.py
+
+  What you will see (takes about 2–3 minutes first time):
+  ─────────────────────────────────────────────────────
+  ============================================================
+    QUANTIZATION PIPELINE  —  Starting Up
+  ============================================================
+
+  📦 Downloading IMDB dataset...        ← downloads automatically
+  ✅ Test set: 200 reviews
+  ✅ Calibration set: 512 reviews
+
+  🔄 Loading FP32 model...              ← downloads ~250MB once
+  ✅ FP32 ready  |  Device: CPU
+
+  🔄 Loading FP16 model...
+  ✅ FP16 ready  |  Device: CPU
+
+  🔄 Loading INT8 PTQ model...
+  ⚙️  Compressing weights to INT8...
+  ✅ INT8 PTQ ready
+
+  🏁 Running benchmark...               ← runs on 200 reviews
+  📊 Evaluating FP32...
+  📊 Evaluating FP16...
+  📊 Evaluating INT8 PTQ...
+
+  ======================================================
+    FINAL BENCHMARK RESULTS
+  ======================================================
+  Model        Accuracy     Drop     Latency   Speedup   Memory
+  FP32           93.2%        —        46ms       1×      255MB
+  FP16           93.0%    -0.2%        28ms     1.6×      128MB
+  INT8 PTQ       91.5%    -1.7%        18ms     2.6×       63MB
+  ======================================================
+
+  ✅ Charts saved → D:\APP PROJECT\results\benchmark_charts.png
+
+  🔬 ROBUSTNESS TEST — Typo Injection
+  🟢 FP32        Clean: 93%  →  Perturbed: 91%  (drop: -2.0%)
+  🟡 FP16        Clean: 93%  →  Perturbed: 91%  (drop: -2.2%)
+  🔴 INT8 PTQ    Clean: 91%  →  Perturbed: 87%  (drop: -4.1%)
+
+  🚀 Launching browser UI...
+  Running on local URL: http://127.0.0.1:7860
+  ─────────────────────────────────────────────────────
+
+STEP 6 — OPEN THE UI
+──────────────────────
+  Open your browser (Chrome / Edge / Firefox)
+  Go to:   http://127.0.0.1:7860
+
+  You will see the interface where you can type any
+  movie review and compare all 3 models side by side.
+
+STEP 7 — VIEW YOUR CHARTS
+───────────────────────────
+  Open File Explorer
+  Go to:   D:\APP PROJECT\results\
+  Open:    benchmark_charts.png
+
+  You will see 3 charts:
+  - Speedup comparison
+  - Memory usage
+  - Accuracy vs Speed scatter plot
+
+TO STOP THE APP
+────────────────
+  Go back to Command Prompt
+  Press:  Ctrl + C
+
+TO RUN AGAIN NEXT TIME
+────────────────────────
+  Open Command Prompt
+  cd "D:\APP PROJECT"
+  venv\Scripts\activate
+  python app.py
+
+===============================================================
+  COMMON ERRORS AND FIXES
+===============================================================
+
+ERROR: 'python' is not recognized
+  FIX: Install Python from python.org
+       Make sure to check "Add Python to PATH" during install
+
+ERROR: No module named 'torch'
+  FIX: Make sure (venv) is showing, then run:
+       pip install -r requirements.txt
+
+ERROR: pip is not recognized
+  FIX: Try:  py -m pip install -r requirements.txt
+
+ERROR: Out of memory
+  FIX: Open app.py, change test_size=200 to test_size=50
+
+Everything runs slowly
+  NORMAL: Without a GPU, CPU inference is slower.
+  The benchmark will still complete and results will be correct.
+
+===============================================================
