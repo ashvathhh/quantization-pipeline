@@ -2,8 +2,6 @@
 
 Layer-aware benchmarking of FP32, FP16, and INT8 quantization for DistilBERT on sentiment classification.
 
-**CS 5130 — Applied Programming and Data Processing for AI**
-Ashvath Cheppalli · Saketh Kuppili
 
 ---
 
